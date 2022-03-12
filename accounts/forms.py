@@ -28,6 +28,10 @@ class RegistrationForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 
+    def password_validation(self, password):
+        if password[0] != password[-1]:
+            raise forms.ValidationError("Password is too short")
+
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
         password = cleaned_data.get('password')

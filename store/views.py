@@ -102,7 +102,7 @@ def submit_review(request, product_id):
     if request.method == 'POST':
         try:
             reviews = ReviewRating.objects.get(
-                user__id=request.user.id, product__id=product_id)
+                user_id=request.user.id, product__name=product_id)
             # instance will make sure that it's to update the existing review
             form = ReviewForm(request.POST, instance=reviews)
             form.save()

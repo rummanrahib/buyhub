@@ -129,17 +129,14 @@ def place_order(request, total=0, quantity=0):
 
             # Generating order number, ex: 20220311
 
-            year = int(datetime.date.today().strftime('%Y'))
-            date = int(datetime.date.today().strftime('%d'))
-            month = int(datetime.date.today().strftime('%m'))
-            temp = datetime.date(year, month, date)
-            current_date = temp.strftime("%Y%m%d")  # 20220311
-            order_number = current_date + str(data.id)
-            data.order_number = order_number
+            data.order_number = data.get_order_number()
             data.save()
+            data.update_order_products_with_current_product_price()
 
-            order = Order.objects.get(
-                user=current_user, is_ordered=False, order_number=order_number)
+            # order = Order.objects.get(
+            #     user=current_user, is_ordered=False, order_number=order_number)
+
+            order = Order.objects.get(order_number=order_number)
 
             context = {
                 'order': order,
